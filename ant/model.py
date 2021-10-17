@@ -23,6 +23,8 @@ class Diffusion(Model):
         self.diffusion = diffusion
         self.initdrop = initdrop
         self.lowerbound = lowerbound
+        self.prob_random = (prob_random,)
+        self.drop_rate = drop_rate
 
         # create empty schedule
         self.schedule = SimultaneousActivation(self)

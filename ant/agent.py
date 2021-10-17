@@ -121,8 +121,12 @@ class Ant(Agent):
                 food.eat()
                 self.state = "HOMING"
                 self.drop = self.model.initdrop
+            # if there is no food
             else:
-                self.gradient_move()
+                if self.random.random() < self.model.prob_random:
+                    self.random_move()
+                else:
+                    self.gradient_move()
 
         # HOMING state
         else:
@@ -138,7 +142,7 @@ class Ant(Agent):
             else:
                 env = self.get_item(Environment)
                 env.add(self.drop)
-                self.drop *= 0.9
+                self.drop *= self.model.drop_rate
                 self.home_move()
 
     def home_move(self):
