@@ -13,6 +13,8 @@ class Diffusion(Model):
         diffusion=0.3,
         initdrop=500,
         lowerbound=0.01,
+        prob_random=0.02,
+        drop_rate=0.9,
     ):
 
         super().__init__()

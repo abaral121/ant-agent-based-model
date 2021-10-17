@@ -45,7 +45,7 @@ def diffusion_portrayal(agent):
         portrayal["text"] = agent.amount
         portrayal["text_color"] = "white"
 
-    # render this way if agent is Home
+    # render this way if agent is Food
     elif type(agent) is Food:
         portrayal["Shape"] = "circle"
         portrayal["r"] = math.log(1 + agent.amount)
@@ -58,7 +58,7 @@ def diffusion_portrayal(agent):
     # render this way if agent is Ant
     elif type(agent) is Ant:
         portrayal["Shape"] = "circle"
-        portrayal["r"] = 2
+        portrayal["r"] = 1
         portrayal["Filled"] = "true"
         portrayal["Layer"] = 1
         portrayal["Color"] = "#000000"
@@ -79,6 +79,8 @@ model_params = {
         "slider", "Diffusion rate", 0.03, 0.0, 1.0, 0.10
     ),
     "initdrop": UserSettableParameter("slider", "Initial Drop", 500, 100, 1000, 50),
+    "prob_random": UserSettableParameter("slider", "Initial Drop", 0.1, 0.0, 1.0, 0.01),
+    "drop_rate": UserSettableParameter("slider", "Initial Drop", 0.9, 0.10, 1.0, 0.10),
 }
 
 
