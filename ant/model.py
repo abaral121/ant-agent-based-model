@@ -32,7 +32,8 @@ class Diffusion(Model):
         for (_, x, y) in self.grid.coord_iter():
             # create agent
             cell = Environment((x, y), self)
-
+            if self.random.random() < 0.01:
+                cell.add(500)
             self.grid.place_agent(cell, (x, y))
             self.schedule.add(cell)
 
@@ -58,7 +59,8 @@ class Diffusion(Model):
         # create ant agent, place in grid, add to schedule
         for i in range(4):
             ant = Ant(self.next_id(), self.home, self)
-            self.grid.place_agent(ant, self.home.pos)
+            ant.pos = (12, 44)
+            self.grid.place_agent(ant, (12, 44))
             self.schedule.add(ant)
 
         self.running = True

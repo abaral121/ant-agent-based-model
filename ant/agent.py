@@ -1,4 +1,23 @@
 from mesa import Agent
+import math
+
+
+def get_distance(pos1, pos2):
+    """
+    gets distance euclidian between two points
+
+    args:
+        pos1: the position of first agent
+        pos2: the position of second agent
+
+    return: a single value of distance
+    """
+    x1, y1 = pos1
+    x2, y2 = pos2
+    dx = x1 - x2
+    dy = y1 - y2
+
+    return math.sqrt((dx ** 2 + dy ** 2))
 
 
 class Environment(Agent):
@@ -83,5 +102,38 @@ class Ant(Agent):
         self.model.grid.move_agent(self, next_move)
 
     def step(self):
-        self.random_move()
+        # self.random_move()
+        # self.home_move()
+        self.gradient_move()
         pass
+
+    def home_move(self):
+        neighbors = [
+            n.get_pos()
+            for n in self.model.grid.get_neighbors(self.pos, True)
+            if type(n) is Environment
+        ]
+        min_dist = min([get_distance(self.home.pos, pos) for pos in neighbors])
+        final_candidates = [
+            pos for pos in neighbors if get_distance(self.home.pos, pos) == min_dist
+        ]
+        self.random.shuffle(final_candidates)
+        self.model.grid.move_agent(self, final_candidates[0])
+
+    def gradient_move(self):
+        max = self.model.lowerbound
+        neighbors = [
+            n
+            for n in self.model.grid.get_neighbors(self.pos, True)
+            if type(n) is Environment
+        ]
+        where = (0, 0)
+        for n in neighbors:
+            if n.amount > max:
+                max = n.amount
+                where = n.get_pos()
+
+        if max > self.model.lowerbound:
+            self.model.grid.move_agent(self, where)
+        else:
+            self.random_move()
