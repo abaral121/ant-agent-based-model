@@ -28,21 +28,24 @@ class Diffusion(Model):
         # define grid
         self.grid = MultiGrid(height, width, torus=True)
 
-        # iter through grid, create and place envionrment agent in each spot
-        for (_, x, y) in self.grid.coord_iter():
-            # create agent
-            cell = Environment((x, y), self)
-            if self.random.random() < 0.01:
-                cell.add(500)
-            self.grid.place_agent(cell, (x, y))
-            self.schedule.add(cell)
-
         # location of home
         homeloc = (25, 25)
-
         # create home agent, place in grid, add to schedule
         # the reason why we do self.home is so that the home coords are accessable to other classes?
         self.home = Home(self.next_id, homeloc, self)
+
+        # create ant agent, place at home location, add to schedule
+        for i in range(50):
+            ant = Ant(self.next_id(), self.home, self)
+            self.grid.place_agent(ant, self.home.pos)
+            self.schedule.add(ant)
+
+        # create Enviornment agent, place each agent in each element, add to schedule
+        for (_, x, y) in self.grid.coord_iter():
+            cell = Environment((x, y), self)
+            self.grid.place_agent(cell, (x, y))
+            self.schedule.add(cell)
+
         self.grid.place_agent(self.home, homeloc)
         self.schedule.add(self.home)
 
@@ -55,13 +58,6 @@ class Diffusion(Model):
             self.grid.place_agent(food, loc)
             self.schedule.add(food)
             food.add(100)
-
-        # create ant agent, place in grid, add to schedule
-        for i in range(4):
-            ant = Ant(self.next_id(), self.home, self)
-            ant.pos = (12, 44)
-            self.grid.place_agent(ant, (12, 44))
-            self.schedule.add(ant)
 
         self.running = True
 

@@ -90,6 +90,8 @@ class Ant(Agent):
         super().__init__(unique_id, model)
         self.pos = home.pos
         self.home = home
+        self.drop = 0
+        self.state = "FORAGING"
 
     def random_move(self):
         # search ant agent surrounding area
@@ -101,11 +103,43 @@ class Ant(Agent):
         # move agent
         self.model.grid.move_agent(self, next_move)
 
+    def get_item(self, item):
+        # gets contents of what is in the cell
+        this_cell = self.model.grid.get_cell_list_contents([self.pos])
+        # iter through contents and see if it matches item(agent) type
+        for agent in this_cell:
+            if type(agent) == item:
+                return agent
+
     def step(self):
-        # self.random_move()
-        # self.home_move()
-        self.gradient_move()
-        pass
+
+        # FORAGING state
+        if self.state == "FORAGING":
+            # is there food here
+            food = self.get_item(Food)
+            if food is not None and food.any_food():
+                food.eat()
+                self.state = "HOMING"
+                self.drop = self.model.initdrop
+            else:
+                self.gradient_move()
+
+        # HOMING state
+        else:
+            # am i home? drop off fo0d and go back FORAGING
+            # stop dropping pheremons
+            if self.pos == self.home.pos:
+                home = self.get_item(Home)
+                home.add(1)
+                self.state = "FORAGING"
+                self.drop = 0
+
+            # do i want to go home?
+            else:
+                env = self.get_item(Environment)
+                env.add(self.drop)
+                self.drop *= 0.9
+                self.home_move()
 
     def home_move(self):
         neighbors = [
