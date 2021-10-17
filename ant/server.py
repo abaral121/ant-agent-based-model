@@ -78,9 +78,11 @@ model_params = {
     "diffusion": UserSettableParameter(
         "slider", "Diffusion rate", 0.03, 0.0, 1.0, 0.10
     ),
-    "initdrop": UserSettableParameter("slider", "Initial Drop", 500, 100, 1000, 50),
-    "prob_random": UserSettableParameter("slider", "Initial Drop", 0.1, 0.0, 1.0, 0.01),
-    "drop_rate": UserSettableParameter("slider", "Initial Drop", 0.9, 0.10, 1.0, 0.10),
+    "initdrop": UserSettableParameter("slider", "Initial drop", 500, 100, 1000, 50),
+    "prob_random": UserSettableParameter(
+        "slider", "Random Probability", 0.1, 0.0, 1.0, 0.01
+    ),
+    "drop_rate": UserSettableParameter("slider", "Drop rate", 0.9, 0.10, 1.0, 0.10),
 }
 
 
