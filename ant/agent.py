@@ -23,7 +23,7 @@ def get_distance(pos1, pos2):
 class Environment(Agent):
     def __init__(self, pos, model):
         super().__init__(pos, model)  # in this case pos was the unique id
-        self.pos = pos
+        # self.pos = pos
         self.amount = 0.0
 
     def step(self):
@@ -88,7 +88,7 @@ class Food(Agent):
 class Ant(Agent):
     def __init__(self, unique_id, home, model):
         super().__init__(unique_id, model)
-        self.pos = home.pos
+        # self.pos = home.pos
         self.home = home
         self.drop = 0
         self.state = "FORAGING"
@@ -130,7 +130,7 @@ class Ant(Agent):
 
         # HOMING state
         else:
-            # am i home? drop off fo0d and go back FORAGING
+            # am i home? drop off food and go back FORAGING
             # stop dropping pheremons
             if self.pos == self.home.pos:
                 home = self.get_item(Home)
