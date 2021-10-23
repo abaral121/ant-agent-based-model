@@ -32,14 +32,15 @@ class Diffusion(Model):
         # define grid
         self.grid = MultiGrid(height, width, torus=True)
 
-        # location of home
-        homeloc = (25, 25)
         # create home agent, place in grid, add to schedule
+        homeloc = (25, 25)
         # the reason why we do self.home is so that the home coords are accessable to other classes?
         self.home = Home(self.next_id, homeloc, self)
+        self.grid.place_agent(self.home, homeloc)
+        self.schedule.add(self.home)
 
         # create ant agent, place at home location, add to schedule
-        for i in range(50):
+        for _ in range(50):
             ant = Ant(self.next_id(), self.home, self)
             self.grid.place_agent(ant, self.home.pos)
             self.schedule.add(ant)
@@ -49,9 +50,6 @@ class Diffusion(Model):
             cell = Environment((x, y), self)
             self.grid.place_agent(cell, (x, y))
             self.schedule.add(cell)
-
-        self.grid.place_agent(self.home, homeloc)
-        self.schedule.add(self.home)
 
         # location of food
         food_locs = ((22, 11), (35, 8), (18, 33))

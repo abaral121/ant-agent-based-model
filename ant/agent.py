@@ -112,7 +112,6 @@ class Ant(Agent):
                 return agent
 
     def step(self):
-
         # FORAGING state
         if self.state == "FORAGING":
             # is there food here
